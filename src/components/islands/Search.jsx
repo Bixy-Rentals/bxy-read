@@ -18,45 +18,53 @@ export default function Search({ placeholder = "Search...", lang = "en" }) {
   });
 
   useEffect(() => {
-    if (open && !fuse) {
-      fetch("/api/search.json")
-        .then((res) => res.json())
-        .then((data) => {
-          const fuseInstance = new Fuse(data, {
-            keys: ["title", "description", "body"],
-            includeMatches: true,
-            minMatchCharLength: 2,
-            threshold: 0.3,
-            ignoreLocation: true,
-          });
-          setFuse(fuseInstance);
-        })
-        .catch((err) => console.error("Failed to load search index:", err));
-    }
+    if (!(open && !fuse)) return;
+    fetch("/api/search.json")
+      .then((res) => res.json())
+      .then(function (data) {
+        const fuseInstance = new Fuse(data, {
+          keys: ["title", "description", "body"],
+          includeMatches: true,
+          minMatchCharLength: 2,
+          threshold: 0.3,
+          ignoreLocation: true,
+        });
+        setFuse(fuseInstance);
+      })
+      .catch(function handleSearchError(err) {
+        return console.error("Failed to load search index:", err);
+      });
   }, [open, fuse]);
 
   useEffect(() => {
-    if (fuse && query.trim()) {
+    if (fuse && query.trim().length > 0) {
       const searchResults = fuse.search(query).slice(0, 15);
       setResults(searchResults);
-    } else setResults([]);
+      return;
+    }
+    setResults([]);
   }, [query, fuse]);
 
   useEffect(() => {
-    if (!open) setQuery("");
-    else if (inputRef.current) setTimeout(() => inputRef.current.focus(), 100);
+    if (!open) {
+      setQuery("");
+      return;
+    }
+    if (inputRef.current) setTimeout(() => inputRef.current.focus(), 100);
   }, [open]);
 
   useEffect(() => {
-    const down = (e) => {
+    document.addEventListener("keydown", down);
+    return () => document.removeEventListener("keydown", down);
+
+    // helpers
+    function down(e) {
       if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
         setOpen((o) => !o);
       }
       if (e.key === "Escape") setOpen(false);
-    };
-    document.addEventListener("keydown", down);
-    return () => document.removeEventListener("keydown", down);
+    }
   }, []);
 
   return (
