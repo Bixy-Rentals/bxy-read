@@ -14,7 +14,7 @@ export const siteConfig = {
     enabled: true,
   },
   blog: {
-    postsPerPage: 6,
+    postsPerPage: 8,
   },
   contact: {
     email: {
