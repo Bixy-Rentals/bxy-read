@@ -22,12 +22,20 @@ export default function Search({ placeholder = "Search...", lang = "en" }) {
     fetch("/api/search.json")
       .then((res) => res.json())
       .then(function (data) {
+        // supports fuzzy search
+        // see: https://www.fusejs.io/fuzzy-search.html#how-it-works
         const fuseInstance = new Fuse(data, {
-          keys: ["title", "description", "body"],
+          keys: [
+            { name: "body", weight: 0.6 },
+            { name: "description", weight: 0.3 },
+            { name: "title", weight: 0.1 },
+          ],
           includeMatches: true,
           minMatchCharLength: 2,
-          threshold: 0.3,
+          threshold: 0.53,
+          distance: 100,
           ignoreLocation: true,
+          ignoreFieldNorm: true,
         });
         setFuse(fuseInstance);
       })
