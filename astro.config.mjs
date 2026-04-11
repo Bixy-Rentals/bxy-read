@@ -118,6 +118,9 @@ export default defineConfig({
       { protocol: "http" },
     ],
   },
+  build: {
+    emptyOutDir: true,
+  },
   adapter: getAdapter(),
   integrations: [
     sitemap({
