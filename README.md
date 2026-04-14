@@ -119,7 +119,7 @@ Add new languages or update translations in `src/i18n/locales/`. The project use
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/winterrdog/bxy-read.git && cd bxy-read
+   git clone https://github.com/Bixy-Rentals/bxy-read.git && cd bxy-read
    ```
 
 2. **Install dependencies**
