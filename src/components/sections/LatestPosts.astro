@@ -22,14 +22,13 @@ const {
   count = 3,
 } = Astro.props;
 
-// const posts = (await getCollection("blog"))
-//   .filter((post) => post.id.startsWith(`${lang}/`))
-//   .sort(
-//     (a: CollectionEntry<"blog">, b: CollectionEntry<"blog">) =>
-//       b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-//   )
-//   .slice(0, count);
-const posts = [];
+const posts = (await getCollection("blog"))
+  .filter((post) => post.id.startsWith(`${lang}/`))
+  .sort(
+    (a: CollectionEntry<"blog">, b: CollectionEntry<"blog">) =>
+      b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+  )
+  .slice(0, count);
 
 type BlogPost = CollectionEntry<"blog">;
 const hasPosts = posts.length > 0;
