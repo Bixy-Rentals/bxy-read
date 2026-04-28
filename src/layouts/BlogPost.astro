@@ -1,6 +1,5 @@
 ---
 import Layout from "./Layout.astro";
-import { Image } from "astro:assets";
 import AudioPlayer from "~/components/common/AudioPlayer.astro";
 import { defaultLang } from "~/i18n/ui";
 import { isRtl, useTranslations } from "~/i18n/utils";
@@ -10,9 +9,9 @@ interface Props {
   description: string;
   pubDate: Date;
   updatedDate?: Date;
-  heroImage?: ImageMetadata;
+  heroImage?: string;
   youtubeId?: string;
-  audioUrl?: string; // Add audioUrl prop
+  audioUrl?: string;
   isVideo?: boolean;
   children?: any;
   noindex?: boolean;
@@ -43,7 +42,7 @@ const schema = {
   description: description,
   datePublished: pubDate.toISOString(),
   ...(updatedDate && { dateModified: updatedDate.toISOString() }),
-  ...(heroImage && { image: new URL(heroImage.src, Astro.site).toString() }),
+  ...(heroImage && { image: heroImage }),
   author: {
     "@type": "Person",
     name: "Bixy Stays Team",
@@ -62,7 +61,7 @@ import ScrollProgress from "~/components/layout/ScrollProgress.astro";
 <Layout
   title={title}
   description={description}
-  image={heroImage?.src}
+  image={heroImage}
   article={true}
   noindex={noindex}
   nofollow={nofollow}
@@ -96,10 +95,9 @@ import ScrollProgress from "~/components/layout/ScrollProgress.astro";
       {
         heroImage && !youtubeId && (
           <div class="rounded-2xl overflow-hidden mb-8 border border-black/10 dark:border-white/10 shadow-2xl">
-            <Image
+            <img
               src={heroImage}
-              inferSize
-              alt=""
+              alt={title}
               class="w-full object-cover aspect-video"
             />
           </div>
