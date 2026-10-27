@@ -22,7 +22,7 @@ export const siteConfig = {
       sales: "info@bixxxy.com",
     },
     phone: {
-      main: "+256 782 009 476",
+      main: "+256 795 751 570",
       label: "Mon-Fri 9am-5pm EAT",
     },
     address: {
